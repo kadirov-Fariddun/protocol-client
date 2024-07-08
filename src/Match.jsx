@@ -18,7 +18,7 @@ export const Match = () => {
     // обновляем данные игрока и команды в туре 
     const updateDataTeam = async (id,newData) => {
       try{
-        const response = await axios.put(`https://protocol-mpliga-server-7hnl.vercel.app/api/teams/${id}`,newData);
+        const response = await axios.put(`http://45.84.225.47:5001/api/teams/${id}`,newData);
         console.log('Данные успешно обновились: ',response.data);
         return response.data;
       }catch(e){
@@ -29,7 +29,7 @@ export const Match = () => {
     } 
     const updateDataPlayer = async (id,newData) => {
       try{
-        const response = await axios.put(`https://protocol-mpliga-server-7hnl.vercel.app/api/players/${id}`,newData);
+        const response = await axios.put(`http://45.84.225.47:5001/api/players/${id}`,newData);
         console.log('Данные успешно обновились: ',response.data);
         return response.data;
       }catch(e){
@@ -97,7 +97,7 @@ const sendMessageToTelegram = (playerAlert,team1,team2,player) => {
 
     // получаем командлу по id
     const getTeams = async (id) => {
-      const URL = `https://protocol-mpliga-server-7hnl.vercel.app/api/teams/${id}`;
+      const URL = `http://45.84.225.47:5001/api/teams/${id}`;
       let data = [];
       try{
         const response = await axios.get(URL);
@@ -110,7 +110,7 @@ const sendMessageToTelegram = (playerAlert,team1,team2,player) => {
       }
     };
     const getPlayers = async () => {
-      const URL = `https://protocol-mpliga-server-7hnl.vercel.app/api/players/`;
+      const URL = `http://45.84.225.47:5001/api/players/`;
       let data = [];
       try{
         const response = await axios.get(URL);
