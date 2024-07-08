@@ -7,7 +7,7 @@ const PORT = process.env.PORT || 5000;
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-app.use(express.static('public', {
+app.use(express.static('dist', {
   extensions: ['html', 'jsx'] // добавьте jsx в список расширений
 }));
 app.use(express.static(__dirname));
