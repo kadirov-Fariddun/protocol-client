@@ -8,7 +8,7 @@ export const Tur = () => {
     const [teams,setTeams] = useState([]);
     const [tur] = useState(turs[id]);
     const getTeams = async () => {
-      const URL = 'https://protocol-mpliga-server-7hnl.vercel.app/api/teams/';
+      const URL = 'http://45.84.225.47:5001/api/teams/';
       let data = [];
       try{
         const response = await axios.get(URL);
@@ -56,9 +56,9 @@ export const Tur = () => {
               }
               return (
                 <>
-                  <div key={i} className="tur">
+                  <div className="tur">
                     <h3>{time[i]}</h3>
-                    <li>
+                    <li key={i}>
                       <p>
                       <NavLink to={`/match/${team1.id}-${team2.id}`} className={`left ${team1.point > team2.point?'win':team1.point < team2.point ? 'lose':''}`}>{team1.team}</NavLink>
                       <span>

@@ -18,7 +18,7 @@ export const Match = () => {
     // обновляем данные игрока и команды в туре 
     const updateDataTeam = async (id,newData) => {
       try{
-        const response = await axios.put(`https://protocol-mpliga-server-7hnl.vercel.app/api/teams/${id}`,newData);
+        const response = await axios.put(`http://45.84.225.47:5001/api/teams/${id}`,newData);
         console.log('Данные успешно обновились: ',response.data);
         return response.data;
       }catch(e){
@@ -29,7 +29,7 @@ export const Match = () => {
     } 
     const updateDataPlayer = async (id,newData) => {
       try{
-        const response = await axios.put(`https://protocol-mpliga-server-7hnl.vercel.app/api/players/${id}`,newData);
+        const response = await axios.put(`http://45.84.225.47:5001/api/players/${id}`,newData);
         console.log('Данные успешно обновились: ',response.data);
         return response.data;
       }catch(e){
@@ -97,7 +97,7 @@ const sendMessageToTelegram = (playerAlert,team1,team2,player) => {
 
     // получаем командлу по id
     const getTeams = async (id) => {
-      const URL = `https://protocol-mpliga-server-7hnl.vercel.app/api/teams/${id}`;
+      const URL = `http://45.84.225.47:5001/api/teams/${id}`;
       let data = [];
       try{
         const response = await axios.get(URL);
@@ -110,7 +110,7 @@ const sendMessageToTelegram = (playerAlert,team1,team2,player) => {
       }
     };
     const getPlayers = async () => {
-      const URL = `https://protocol-mpliga-server-7hnl.vercel.app/api/players/`;
+      const URL = `http://45.84.225.47:5001/api/players/`;
       let data = [];
       try{
         const response = await axios.get(URL);
@@ -146,17 +146,18 @@ const sendMessageToTelegram = (playerAlert,team1,team2,player) => {
     });
     },[]);
     const teamList = {
-      team1:[],
-      team2:[],
+      team1: [],
+      team2: [],
     };
-     players.map(player => {
-      if(player.team.toLowerCase() == team1.team.toLowerCase()) {
-        teamList.team1.push(player);
-      // 
-      }else if(player.team.toLowerCase() == team2.team.toLowerCase()){
-        teamList.team2.push(player);
-      }
-    })
+    if (players && typeof team1.team !== 'undefined' && typeof team2.team !== 'undefined') {
+        players.forEach(player => {
+            if (player.team.toLowerCase() == team1.team.toLowerCase()) {
+              teamList.team1.push(player);
+            } else if (player.team.toLowerCase() == team2.team.toLowerCase()) {
+              teamList.team2.push(player);
+            }
+        });
+    }
     const date = new Date();
     const dateNow = `${date.getDate()}.${date.getMonth()+1}.${date.getFullYear()}`;
 
@@ -259,7 +260,11 @@ const sendMessageToTelegram = (playerAlert,team1,team2,player) => {
       }
     }
   return (
+    
     <>
+    {
+     players && player && team1 && team2 ?
+      <>
     <div className="match">
       <div className="match-titles">
         <BackBtn />
@@ -270,7 +275,7 @@ const sendMessageToTelegram = (playerAlert,team1,team2,player) => {
         {/* team 1 */}
         <div className="team">
           <div className="team-title">
-            <h2>{team1.team}</h2>
+            <h2 style={{textAlign:'left'}}>{team1.team}</h2>
             <strong>{team1.point}</strong>
           </div>
             <ul>
@@ -286,49 +291,51 @@ const sendMessageToTelegram = (playerAlert,team1,team2,player) => {
                       setModalActive('active');
                      }} 
                      className={team1.red_card != null && team1.red_card.includes(player.name) ?
-                      'have-red-card':''
+                      'have-red-card fdc':'fdc'
                      }>
                       <span>{player.name}</span>
-                      {
-                        team1.goals != null ? 
-                        JSON.parse(team1.goals).map((g,i)=>(
-                          g.toLowerCase() == player.name.toLowerCase()?
-                          <p key={i}>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                              <path d="M19.071 4.929a9.936 9.936 0 0 0-7.07-2.938 9.943 9.943 0 0 0-7.072 2.938c-3.899 3.898-3.899 10.243 0 14.142a9.94 9.94 
-                              0 0 0 7.073 2.938 9.936 9.936 0 0 0 7.07-2.937c3.899-3.898 3.899-10.243-.001-14.143zM12.181 4h-.359c.061-.001.119-.009.18-.009s.118.008.179.009zm6.062 
-                              13H16l-1.258 2.516a7.956 7.956 0 0 1-2.741.493 7.96 7.96 0 0 1-2.746-.494L8 17.01H5.765a7.96 7.96 0 0 1-1.623-3.532L6 11 
-                              4.784 8.567a7.936 7.936 0 0 1 1.559-2.224 7.994 7.994 0 0 1 3.22-1.969L12 6l2.438-1.625a8.01 8.01 0 0 1 3.22 1.968 7.94 7.94 0 0 1 
-                              1.558 2.221L18 11l1.858 2.478A7.952 7.952 0 0 1 18.243 17z"></path><path d="m8.5 11 1.5 4h4l1.5-4L12 8.5z"></path>
-                            </svg>
-                          </p>:''
-                        ))
-                        :''
-                      }
-                      {
-                        team1.yellow_card != null ? 
-                        JSON.parse(team1.yellow_card).map((y,i)=>(
-                          y.toLowerCase() == player.name.toLowerCase()?
-                          <p key={i} className='yellow-card'>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                              <path d="M15 2H6c-1.103 0-2 .897-2 2v16c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2V7l-5-5zm-6 8H7V6h2v4zm3 0h-2V6h2v4zm3 0h-2V6h2v4z"></path>
-                            </svg>
-                          </p>:''
-                        ))
-                        :''
-                      }
-                      {
-                        team1.red_card != null ? 
-                        JSON.parse(team1.yellow_card).map((y,i)=>(
-                          y.toLowerCase() == player.name.toLowerCase()?
-                          <p key={i} className='red-card'>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                              <path d="M15 2H6c-1.103 0-2 .897-2 2v16c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2V7l-5-5zm-6 8H7V6h2v4zm3 0h-2V6h2v4zm3 0h-2V6h2v4z"></path>
-                            </svg>
-                          </p>:''
-                        ))
-                        :''
-                      }
+                      <span>
+                        {
+                          team1.goals != null ? 
+                          JSON.parse(team1.goals).map((g,i)=>(
+                            g.toLowerCase() == player.name.toLowerCase()?
+                            <p key={i}>
+                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                <path d="M19.071 4.929a9.936 9.936 0 0 0-7.07-2.938 9.943 9.943 0 0 0-7.072 2.938c-3.899 3.898-3.899 10.243 0 14.142a9.94 9.94 
+                                0 0 0 7.073 2.938 9.936 9.936 0 0 0 7.07-2.937c3.899-3.898 3.899-10.243-.001-14.143zM12.181 4h-.359c.061-.001.119-.009.18-.009s.118.008.179.009zm6.062 
+                                13H16l-1.258 2.516a7.956 7.956 0 0 1-2.741.493 7.96 7.96 0 0 1-2.746-.494L8 17.01H5.765a7.96 7.96 0 0 1-1.623-3.532L6 11 
+                                4.784 8.567a7.936 7.936 0 0 1 1.559-2.224 7.994 7.994 0 0 1 3.22-1.969L12 6l2.438-1.625a8.01 8.01 0 0 1 3.22 1.968 7.94 7.94 0 0 1 
+                                1.558 2.221L18 11l1.858 2.478A7.952 7.952 0 0 1 18.243 17z"></path><path d="m8.5 11 1.5 4h4l1.5-4L12 8.5z"></path>
+                              </svg>
+                            </p>:''
+                          ))
+                          :''
+                        }
+                        {
+                          team1.yellow_card != null ? 
+                          JSON.parse(team1.yellow_card).map((y,i)=>(
+                            y.toLowerCase() == player.name.toLowerCase()?
+                            <p key={i} className='yellow-card'>
+                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                <path d="M15 2H6c-1.103 0-2 .897-2 2v16c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2V7l-5-5zm-6 8H7V6h2v4zm3 0h-2V6h2v4zm3 0h-2V6h2v4z"></path>
+                              </svg>
+                            </p>:''
+                          ))
+                          :''
+                        }
+                        {
+                          team1.red_card != null ? 
+                          JSON.parse(team1.yellow_card).map((y,i)=>(
+                            y.toLowerCase() == player.name.toLowerCase()?
+                            <p key={i} className='red-card'>
+                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                <path d="M15 2H6c-1.103 0-2 .897-2 2v16c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2V7l-5-5zm-6 8H7V6h2v4zm3 0h-2V6h2v4zm3 0h-2V6h2v4z"></path>
+                              </svg>
+                            </p>:''
+                          ))
+                          :''
+                        }
+                      </span>
                     </button>
                     </li>
                 ))
@@ -340,7 +347,7 @@ const sendMessageToTelegram = (playerAlert,team1,team2,player) => {
         <div className="team">
           <div className="team-title">
             <strong>{team2.point}</strong>
-            <h2>{team2.team}</h2>
+            <h2 style={{textAlign:'right'}}>{team2.team}</h2>
           </div>
             <ul>
               {
@@ -358,46 +365,48 @@ const sendMessageToTelegram = (playerAlert,team1,team2,player) => {
                       'have-red-card':''
                     } 
                     >
-                       {
-                        team2.goals != null ? 
-                        JSON.parse(team2.goals).map((g,i)=>(
-                          g.toLowerCase() == player.name.toLowerCase()?
-                          <p key={i}>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                              <path d="M19.071 4.929a9.936 9.936 0 0 0-7.07-2.938 9.943 9.943 0 0 0-7.072 2.938c-3.899 3.898-3.899 10.243 0 14.142a9.94 9.94 
-                              0 0 0 7.073 2.938 9.936 9.936 0 0 0 7.07-2.937c3.899-3.898 3.899-10.243-.001-14.143zM12.181 4h-.359c.061-.001.119-.009.18-.009s.118.008.179.009zm6.062 
-                              13H16l-1.258 2.516a7.956 7.956 0 0 1-2.741.493 7.96 7.96 0 0 1-2.746-.494L8 17.01H5.765a7.96 7.96 0 0 1-1.623-3.532L6 11 
-                              4.784 8.567a7.936 7.936 0 0 1 1.559-2.224 7.994 7.994 0 0 1 3.22-1.969L12 6l2.438-1.625a8.01 8.01 0 0 1 3.22 1.968 7.94 7.94 0 0 1 
-                              1.558 2.221L18 11l1.858 2.478A7.952 7.952 0 0 1 18.243 17z"></path><path d="m8.5 11 1.5 4h4l1.5-4L12 8.5z"></path>
-                            </svg>
-                          </p>:''
-                        ))
-                        :''
-                      }
-                       {
-                        team2.yellow_card != null ? 
-                        JSON.parse(team2.yellow_card).map((y,i)=>(
-                          y.toLowerCase() == player.name.toLowerCase()?
-                          <p key={i} className='yellow-card'>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                              <path d="M15 2H6c-1.103 0-2 .897-2 2v16c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2V7l-5-5zm-6 8H7V6h2v4zm3 0h-2V6h2v4zm3 0h-2V6h2v4z"></path>
-                            </svg>
-                          </p>:''
-                        ))
-                        :''
-                      }
+                      <span>
                         {
-                        team2.red_card != null ? 
-                        JSON.parse(team2.red_card).map((y,i)=>(
-                          y.toLowerCase() == player.name.toLowerCase()?
-                          <p key={i} className='red-card'>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                              <path d="M15 2H6c-1.103 0-2 .897-2 2v16c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2V7l-5-5zm-6 8H7V6h2v4zm3 0h-2V6h2v4zm3 0h-2V6h2v4z"></path>
-                            </svg>
-                          </p>:''
-                        ))
-                        :''
-                      }
+                          team2.goals != null ? 
+                          JSON.parse(team2.goals).map((g,i)=>(
+                            g.toLowerCase() == player.name.toLowerCase()?
+                            <p key={i}>
+                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                <path d="M19.071 4.929a9.936 9.936 0 0 0-7.07-2.938 9.943 9.943 0 0 0-7.072 2.938c-3.899 3.898-3.899 10.243 0 14.142a9.94 9.94 
+                                0 0 0 7.073 2.938 9.936 9.936 0 0 0 7.07-2.937c3.899-3.898 3.899-10.243-.001-14.143zM12.181 4h-.359c.061-.001.119-.009.18-.009s.118.008.179.009zm6.062 
+                                13H16l-1.258 2.516a7.956 7.956 0 0 1-2.741.493 7.96 7.96 0 0 1-2.746-.494L8 17.01H5.765a7.96 7.96 0 0 1-1.623-3.532L6 11 
+                                4.784 8.567a7.936 7.936 0 0 1 1.559-2.224 7.994 7.994 0 0 1 3.22-1.969L12 6l2.438-1.625a8.01 8.01 0 0 1 3.22 1.968 7.94 7.94 0 0 1 
+                                1.558 2.221L18 11l1.858 2.478A7.952 7.952 0 0 1 18.243 17z"></path><path d="m8.5 11 1.5 4h4l1.5-4L12 8.5z"></path>
+                              </svg>
+                            </p>:''
+                          ))
+                          :''
+                        }
+                        {
+                          team2.yellow_card != null ? 
+                          JSON.parse(team2.yellow_card).map((y,i)=>(
+                            y.toLowerCase() == player.name.toLowerCase()?
+                            <p key={i} className='yellow-card'>
+                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                <path d="M15 2H6c-1.103 0-2 .897-2 2v16c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2V7l-5-5zm-6 8H7V6h2v4zm3 0h-2V6h2v4zm3 0h-2V6h2v4z"></path>
+                              </svg>
+                            </p>:''
+                          ))
+                          :''
+                        }
+                          {
+                          team2.red_card != null ? 
+                          JSON.parse(team2.red_card).map((y,i)=>(
+                            y.toLowerCase() == player.name.toLowerCase()?
+                            <p key={i} className='red-card'>
+                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                <path d="M15 2H6c-1.103 0-2 .897-2 2v16c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2V7l-5-5zm-6 8H7V6h2v4zm3 0h-2V6h2v4zm3 0h-2V6h2v4z"></path>
+                              </svg>
+                            </p>:''
+                          ))
+                          :''
+                        }
+                      </span>
                       <span>{player.name}</span>
                     </button>
                   </li>
@@ -537,7 +546,9 @@ const sendMessageToTelegram = (playerAlert,team1,team2,player) => {
       </div>
       :''
     }
-    
-    </>
+    </> :
+    <h1>Подожди блять загрузка...</h1>
+  }
+    </> 
   )
 }

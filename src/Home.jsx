@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { turs } from './data';
 import axios from 'axios';
 
 export default function Home() {
   const [teams,setTeams] = useState([]);
   const getTeams = async () => {
-    const URL = 'https://protocol-mpliga-server-7hnl.vercel.app/api/teams/';
+    const URL = 'http://45.84.225.47:5001/api/teams/';
     let data = [];
     try{
       const response = await axios.get(URL);
@@ -18,7 +18,7 @@ export default function Home() {
       throw e;
     }
   };
-
+ 
   useEffect(()=>{
     getTeams()
     .then(data =>setTeams(data))
@@ -27,6 +27,7 @@ export default function Home() {
     }
     );
   },[]);
+
   return (
     <div className="all-turs">
       <h1>PROTOKOL</h1>
