@@ -691,15 +691,53 @@ h1{
     flex-direction: column;
     row-gap: 20px;
     backdrop-filter: blur(2px);
-    button{
+    &.see{
+        backdrop-filter: blur(0px);
+        background-color: rgb(0,0,0,.4);
+        p{
+            display: none;
+        }
+    }
+    .back-btn{
         position: fixed;
         left: 0;
         top: 0;
     }
     p{
-        text-align: left;
+        text-align: center;
         color: #fff;
         font-size: 18px;
+        text-wrap:balance;
+        padding: 0 5px;
+    }
+    .protocol-see-btn{
+        position: absolute;
+        top: 30px;
+        right: 20px;
+        width: 40px;
+        background-color: transparent;
+        border: none;
+        backface-visibility: hidden;
+        cursor: pointer;
+        &:before{
+            content: "";
+            position: absolute;
+            top: -4px;
+            left: 3px;
+            transform: rotate(50deg);
+            width: 130%;
+            height: 4px;
+            background-color: #fff;
+            transform-origin: left;
+            transition: .1s;
+        }
+        &.see::before{
+            transition: .1s;
+            opacity: 0;
+        }
+        svg{
+            fill: #fff;
+        }
     }
 }
 
