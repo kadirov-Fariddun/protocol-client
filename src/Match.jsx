@@ -8,6 +8,7 @@ export const Match = () => {
     id = id.split('-');
     const [team1,setTeam1] = useState({});
     const [team2,setTeam2] = useState({});
+    const [teams,setTeams] = useState([]);
     const [players,setPlayers] = useState([]);
     const [player,setPlayer] = useState({});
     const [modalActive,setModalActive] = useState('');
@@ -48,10 +49,11 @@ const sendMessageToTelegram = (playerAlert,team1,team2,player) => {
   let message;
 
   if (playerAlert === 'g') {
-      message = 'TEST REJIM!!\n';
+      message = `${team1.ture}-TUR\n`;
       message += `<b>${team1.team}</b> ${team1.point}:${team2.point} <b>${team2.team}</b>\n`;
       message += `<b>gooooollllll 🔥🔥</b>\n`;
-      message += `⚽️ <b>${player.name}</b>`;
+      message += `⚽️ <b>${player.name}</b>\n\n`;
+      message += `🔄<b>MPLIGA - 24/25</b>`;
   }
   else if (playerAlert === 'y') {
       message = 'TEST REJIM!!\n';
@@ -94,6 +96,56 @@ const sendMessageToTelegram = (playerAlert,team1,team2,player) => {
   });
 }
 
+    // отправляем все данные в телеграм после окончания матча
+// const sendMessageToTelegramEndMatch = (team1,team2,teams) => {
+//   const token = '5998034134:AAGaoApUgNL8HMsHMIpxfN2EtV2yOYodUK8';
+//   const chat_id = '@database_mpliga'; // Используйте корректный chat_id
+//   const URL = `https://api.telegram.org/bot${token}/sendMessage`;
+
+//   let message;
+//   teams.forEach(team => {
+//     if(team.ture === team1.ture && team.ture === team2.ended){
+//       if(team.ended){
+//         console.log('проверяем Энд',team);
+//         message += `${team1.team} ${team1.point} : ${team2.point} ${team2.team} #tugadi`;
+//       }else{
+//         console.log('проверяем не энд',team);
+//         message += `${team1.team} ${team1.point} : ${team2.point} ${team2team}`;
+//       }
+//     }
+//   });
+//  console.log('проверяем до отправки',message);
+//   setTimeout(() => {
+//      // Проверка, что message не пустое
+//   if (!message) {
+//     console.error("Message is empty. Please check your input data.");
+//     return;
+// }
+// console.log('проверяем после отправки',message);
+// axios.post(URL, {
+//     chat_id: chat_id,
+//     parse_mode: 'HTML', // Используйте 'HTML' вместо 'html'
+//     text: message,
+// })
+// .then(response => {
+//     console.log("Сообщение отправлено:", response.data);
+// })
+// .catch(error => {
+//     if (error.response) {
+//         // Сервер ответил с кодом состояния, отличным от 2xx
+//         console.error("Ошибка запроса:", error.response.data);
+//     } else if (error.request) {
+//         // Запрос был отправлен, но ответ не был получен
+//         console.error("Нет ответа от сервера:", error.request);
+//     } else {
+//         // Произошла ошибка при настройке запроса
+//         console.error("Ошибка настройки запроса:", error.message);
+//     }
+// });
+//   }, 500);
+ 
+// }
+
 
 
     // получаем командлу по id
@@ -110,6 +162,22 @@ const sendMessageToTelegram = (playerAlert,team1,team2,player) => {
         throw e;
       }
     };
+    // получаем команды 
+    const getAllTeams = async () => {
+      const URL = `http://45.84.225.47:5001/api/teams/`;
+      let data = [];
+      try{
+        const response = await axios.get(URL);
+        data = response.data;
+        return data;
+      }
+      catch (e) {
+        console.error('Ошибка получения данных:', e.message);
+        throw e;
+      }
+    };
+
+    // получаем всех игроков
     const getPlayers = async () => {
       const URL = `http://45.84.225.47:5001/api/players/`;
       let data = [];
@@ -146,10 +214,19 @@ const sendMessageToTelegram = (playerAlert,team1,team2,player) => {
       console.error('Произошла ошибка:', error.message);
     });
     },[]);
+    useEffect(()=>{
+       // получаем всех Команд
+       getAllTeams()
+       .then(data => setTeams(data))
+       .catch(error => {
+          console.error('Произошла ошибка:', error.message);
+       });
+    },[endMatchModal])
     const teamList = {
       team1: [],
       team2: [],
     };
+
     if (players && typeof team1.team !== 'undefined' && typeof team2.team !== 'undefined') {
         players.forEach(player => {
             if (player.team.toLowerCase() == team1.team.toLowerCase()) {
@@ -432,10 +509,13 @@ const sendMessageToTelegram = (playerAlert,team1,team2,player) => {
               newData2.date = dateNow;
               newData1.ended = Number(true);
               newData2.ended = Number(true);
-              console.log(newData1,newData2);
               updateDataTeam(newData1.id,newData1);
               updateDataTeam(newData2.id,newData2);
               setEndMatchModal('');
+              // setTimeout(() => {
+              //   sendMessageToTelegramEndMatch(team1,team2,teams);
+              // }, 500);
+              
             }}>Xa</button>
           </div>
         </div>
