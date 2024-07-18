@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { turs } from './data';
 import axios from 'axios';
+import { GoTable } from './GoTable';
 
 export default function Home() {
   const [teams,setTeams] = useState([]);
@@ -37,6 +38,7 @@ export default function Home() {
             <li key={tur}><NavLink to={`/tur/${tur}`}>{tur} TUR</NavLink></li>
           ))
         }
+        <GoTable />
       </ul>
     </div>
   )
