@@ -3,6 +3,7 @@ import { NavLink, useParams } from 'react-router-dom'
 import { turs } from './data';
 import axios from 'axios';
 import { BackBtn } from './BackBtn';
+import { GoTable } from './GoTable';
 export const Tur = () => {
     const {id} = useParams();
     const [teams,setTeams] = useState([]);
@@ -31,6 +32,7 @@ export const Tur = () => {
     },[]);
   return (
     <>
+     <GoTable />
     <div className="tur">
       <BackBtn />
       <h1>TUR {id}</h1>
