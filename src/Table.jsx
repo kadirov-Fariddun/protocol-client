@@ -24,20 +24,21 @@ export const Table = () => {
         team.rm = (team.zm - team.pm);
       });
       teams.sort((a,b)=>{
-        if(a.point > b.point){
+        if(a.isWinner){
           return -1;
-        }else if(a.point < b.point){
+        } else if(b.isWinner){
           return 1;
-        } else{
-          if(a.rm > b.rm){
+        }else{
+          if(a.point > b.point){
             return -1;
-          }else if(a.rm < b.rm){
+          }else if(a.point < b.point){
             return 1;
-          }
-          else if(a.isWinner){
-            return -1;
-          }else if(b.isWinner){
-            return 1;
+          } else{
+            if(a.rm > b.rm){
+              return -1;
+            }else if(a.rm < b.rm){
+              return 1;
+            }
           }
         }
       })
