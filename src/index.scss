@@ -21,6 +21,19 @@ h1{
     padding-top: 40px;
     margin-bottom: 20px;
     text-align: center;
+    @media(max-height:720px){
+        margin-bottom: 70px;
+    }
+    @media(max-height:667px){
+        margin-bottom: 90px;
+    }
+}
+.container{
+    max-width: 1280px;
+    padding: 0px 20px;
+    width: 100%;
+    margin: 0 auto;
+    padding-top: 40px;
 }
 .all-turs{
     width: 100%;
@@ -892,4 +905,315 @@ h1{
         background-color: #dd4343;
         margin-top: 50px;
     }
+}
+
+
+/******** table ***/
+.table {
+    width: 100%;
+
+    .table-flex {
+        display: flex;
+
+        div {
+            flex: 6;
+        }
+
+        .table-flex-two {
+            @media(max-width:700px) {
+                flex: 8;
+            }
+
+            @media(max-width:600px) {
+                width: 320px;
+                overflow-x: scroll;
+            }
+
+        }
+    }
+
+
+
+
+
+    table {
+        tr {
+            height: 40px;
+
+            th {
+                height: inherit;
+                white-space: nowrap;
+            }
+
+            td {
+                height: inherit;
+                white-space: nowrap;
+            }
+        }
+    }
+
+
+    // first table
+    table.table-one {
+        width: 50%;
+        margin-top: 20px;
+
+        @media(max-width:600px) {
+            margin-right: 20px;
+        }
+
+        @media(max-width:480px) {
+            margin-right: 10px;
+        }
+
+        th {
+            padding: 0 20px;
+
+            @media(max-width:480px) {
+                width: 70px;
+                text-overflow: ellipsis;
+            }
+        }
+
+        tr {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2px;
+
+            // number table
+            .team-number {
+                width: 40px;
+                height: inherit;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-left: 3px solid #fff;
+
+                @media(max-width:480px) {
+                    width: 25px;
+                    border-width: 2px;
+                }
+
+                &.liders {
+                    border-color: blue;
+                }
+
+                &.tops {
+                    border-color: orange;
+                }
+
+                &.outsiders {
+                    border-color: red;
+                }
+            }
+        }
+
+        img.logo-club {
+            margin-right: 10px;
+
+            @media(max-width:480px) {
+                height: 20px;
+                margin-right: 3px;
+            }
+        }
+
+        .club-name {
+            white-space: nowrap;
+
+            @media(max-width:480px) {
+                width: 85px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            @media(max-width:480px) {
+                font-size: 14px;
+            }
+        }
+    }
+
+
+    // table two 
+    .table-two {
+        margin-top: 20px;
+
+        @media(max-width:600px) {
+            width: 320px;
+            overflow-x: scroll;
+        }
+
+
+        th {
+            width: 40px;
+
+            @media(max-width:480px) {
+                font-size: 14px;
+                width: 25px;
+            }
+
+            &:last-child {
+                width: auto;
+            }
+        }
+
+        td {
+            width: 40px;
+            text-align: center;
+
+            @media(max-width:480px) {
+                font-size: 14px;
+                width: 25px;
+            }
+
+
+
+
+            &:last-child {
+                width: auto;
+
+
+
+                div {
+                    height: inherit;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+
+                    span {
+                        height: inherit;
+                        margin: 0 5px;
+                        display: flex;
+                        align-items: center;
+
+                        img {
+                            margin: 0 2px;
+                        }
+
+                        @media(max-width:480px) {
+                            img {
+                                width: 17px;
+                            }
+                        }
+
+                    }
+                }
+            }
+        }
+    }
+
+
+
+
+
+
+
+    // table-footer  
+    .table-footer {
+        margin-top: 40px;
+        width: 99.5%;
+        border: 0.5px solid #ccc;
+
+
+
+        // flex 
+        .table-footer-flex {
+            display: flex;
+            padding: 10px 18px;
+        }
+
+        // info blok
+        .table-footer-info {
+            margin-right: 100px;
+
+            @media(max-width:480px) {
+                margin-right: 40px;
+            }
+
+            // lider info
+            .table-liders {
+                display: flex;
+                align-items: center;
+
+
+                span {
+                    width: 7px;
+                    height: 7px;
+                    background-color: blue;
+                    display: block;
+                    margin-right: 10px;
+                }
+            }
+
+            .table-tops {
+                display: flex;
+                align-items: center;
+
+
+                span {
+                    width: 7px;
+                    height: 7px;
+                    background-color: orange;
+                    display: block;
+                    margin-right: 10px;
+                }
+            }
+
+            .table-outsiders {
+                display: flex;
+                align-items: center;
+
+
+                span {
+                    width: 7px;
+                    height: 7px;
+                    background-color: red;
+                    display: block;
+                    margin-right: 10px;
+                }
+            }
+
+            .table-coments {
+
+                div {
+                    display: flex;
+                    align-items: center;
+                    white-space: nowrap;
+
+                    span {
+                        width: 7px;
+                        height: 7px;
+                        background-color: #000;
+                        margin-right: 10px;
+                    }
+                }
+            }
+        }
+
+        .table-footer-last-5 {
+            div {
+                margin-bottom: 10px;
+                display: flex;
+                align-items: center;
+                white-space: nowrap;
+
+                img {
+                    margin-right: 10px;
+                }
+            }
+        }
+    }
+}
+
+
+.table-link{
+    width: calc(100% - 100px);
+    height: 40px;
+    border-radius: 10px;
+    background-color: #191919;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    margin-top: 20px;
 }
