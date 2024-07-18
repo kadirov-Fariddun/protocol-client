@@ -19,25 +19,30 @@ export const Table = () => {
         .then(res=>setTeams(res))
         .catch(e=>console.log(e));
     },[]);
-    teams.sort((a,b)=>{
-      if(a.point > b.point){
-        return -1;
-      }else if(a.point < b.point){
-        return 1;
-      } else{
-        if(a.rm > b.rm){
+    if(teams && teams.length > 0){
+      teams.forEach(team=> {
+        team.rm = (team.zm - team.pm);
+      });
+      teams.sort((a,b)=>{
+        if(a.point > b.point){
           return -1;
-        }else if(a.rm < b.rm){
+        }else if(a.point < b.point){
           return 1;
+        } else{
+          if(a.rm > b.rm){
+            return -1;
+          }else if(a.rm < b.rm){
+            return 1;
+          }
+          else if(a.isWinner){
+            return -1;
+          }else if(b.isWinner){
+            return 1;
+          }
         }
-        else if(a.isWinner){
-          return -1;
-        }else if(b.isWinner){
-          return 1;
-        }
-      }
+      })
+    }
     
-    })
     console.log(teams);
   return (
     <>
@@ -60,7 +65,6 @@ export const Table = () => {
                   </tr>
                   {
                     teams.map((team,i) => {
-                        team.rm = (team.zm - team.pm);
                       return (
                         <tr key={team.id}>
                           <span className={`team-number ${i <= 3 ? 'liders' : ''} ${i === 4 ? 'tops' : ''} ${i >= 9 ? 'outsiders' : ''}`}>
