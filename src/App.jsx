@@ -8,6 +8,7 @@ import { Match } from './Match';
 import { Auth } from './Auth';
 import Cookies from 'js-cookie';
 import { NotFound } from './NotFound';
+import { Table } from './Table';
 function App() {
   const navigate = useNavigate();
   const authCookie = Cookies.get('auth');
@@ -23,6 +24,7 @@ function App() {
        <Route path='/tur/:id' element={<Tur/>}/>
        <Route path='/match/:id' element={<Match/>}/>
        <Route path='/auth' element={<Auth/>}/>
+       <Route path='/table' element={<Table/>}/>
        <Route path='*' element={<NotFound/>}/>
     </Routes>
   )
