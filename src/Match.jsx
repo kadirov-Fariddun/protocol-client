@@ -17,6 +17,7 @@ export const Match = () => {
     const [playerAlert,setPlayerAlert] = useState('');
     const [endMatchModal,setEndMatchModal] = useState('');
     const [seeProtocol,setSeeProtocol] = useState(false);
+    const [table,setTable] = useState([]);
     // обновляем данные игрока и команды в туре 
     const updateDataTeam = async (id,newData) => {
       try{
@@ -56,16 +57,19 @@ const sendMessageToTelegram = (playerAlert,team1,team2,player) => {
       message += `🔄<b>MPLIGA - 24/25</b>`;
   }
   else if (playerAlert === 'y') {
-      message = 'TEST REJIM!!\n';
+      message = `${team1.ture}-TUR\n`;
       message += `<b>${team1.team}</b> ${team1.point}:${team2.point} <b>${team2.team}</b>\n`;
       message += `<b>ogoxlantirish (${player.team})</b>\n`;
-      message += `🟨<b>${player.name}</b>`;
+      message += `🟨<b>${player.name}</b>\n\n`;
+      message += `🔄<b>MPLIGA - 24/25</b>`;
   }
   else if (playerAlert === 'r') {
-      message = 'TEST REJIM!!\n';
+      message = `${team1.ture}-TUR\n`;
       message += `<b>${team1.team}</b> ${team1.point}:${team2.point} <b>${team2.team}</b>\n`;
       message += `<b>Chetlatish (${player.team})</b>\n`;
-      message += `🟥<b>${player.name}</b>`;
+      message += `🟥<b>${player.name}</b>\n\n`;
+      message += `🔄<b>MPLIGA - 24/25</b>`;
+      
   }
 
   // Проверка, что message не пустое
@@ -336,7 +340,63 @@ const sendMessageToTelegram = (playerAlert,team1,team2,player) => {
       else {
         return;
       }
+    };
+
+
+    // получаем таблицу лиги 
+    async function getTable() {
+      const URL = 'http://45.84.225.47:5001/api/table/';
+      let data = [];
+      try {
+        const response = await axios.get(URL);
+        data = response.data;
+        return data;
+      } catch (error) {
+        console.log('Ошибка при получении таблицу: ',error.message);
+        throw error;
+      }
+    };
+   // обновляем данные таблицы
+   const updateTable = async (id,newData) => {
+    try{
+      const response = await axios.put(`http://45.84.225.47:5001/api/table/${id}`,newData);
+      console.log('Данные успешно обновились: ',response.data);
+      return response.data;
+    }catch(e){
+      console.error('Ошибка получения данных:', e.message);
+      throw e;
     }
+  } ;
+
+     // изменяем данные таблицы
+     function editTableObj(tableTeam1,tableTeam2,newData1,newData2,feedback) {
+        tableTeam1.matches += 1;
+        tableTeam2.matches += 1;
+        if(newData1.point > newData2.point){
+          tableTeam1.wins += 1;
+          tableTeam1.point += 3;
+          tableTeam2.lose += 1;
+        }else if(newData1.point < newData2.point){
+          tableTeam2.wins += 1;
+          tableTeam2.point += 3;
+          tableTeam1.lose += 1;
+        }else{
+          tableTeam1.draw += 1;
+          tableTeam1.point += 1;
+          tableTeam2.draw += 1;
+          tableTeam2.point += 1;
+        }
+        tableTeam1.zm += newData1.point;
+        tableTeam2.zm += newData2.point;
+        tableTeam1.pm += newData2.point;
+        tableTeam2.pm += newData1.point;
+     }
+    
+    useEffect(()=>{
+      getTable()
+      .then(res=>setTable(res))
+      .catch(e=>console.log(e));
+    },[]);
   return (
     
     <>
@@ -512,10 +572,11 @@ const sendMessageToTelegram = (playerAlert,team1,team2,player) => {
               updateDataTeam(newData1.id,newData1);
               updateDataTeam(newData2.id,newData2);
               setEndMatchModal('');
-              // setTimeout(() => {
-              //   sendMessageToTelegramEndMatch(team1,team2,teams);
-              // }, 500);
-              
+              let tableTeam1 = table.find(team => team.team.toLowerCase()==team1.team.toLowerCase());
+              let tableTeam2 = table.find(team => team.team.toLowerCase()==team2.team.toLowerCase());
+              editTableObj(tableTeam1,tableTeam2,newData1,newData2);
+              updateTable(tableTeam1.id,tableTeam1);
+              updateTable(tableTeam2.id,tableTeam2);
             }}>Xa</button>
           </div>
         </div>
