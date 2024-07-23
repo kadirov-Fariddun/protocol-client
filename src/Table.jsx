@@ -51,7 +51,7 @@ export const Table = () => {
         <div className="tp">
           <div className="container">
             <h3 className="table-year">
-              2023 MP-Liga
+              2024/25 MP-Liga
             </h3>
 
 
