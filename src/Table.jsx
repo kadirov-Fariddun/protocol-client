@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 //images 
 import logoClub from './img/mpliga.png';
+import { BackBtn } from './BackBtn';
 export const Table = () => {
     const [teams,setTeams] = useState([]);
     async function getTeams() {
@@ -44,10 +45,10 @@ export const Table = () => {
       })
     }
     
-    console.log(teams);
   return (
     <>
    <div className="table">
+    <BackBtn />
         <div className="tp">
           <div className="container">
             <h3 className="table-year">
