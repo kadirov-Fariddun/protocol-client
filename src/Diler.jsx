@@ -28,7 +28,7 @@ export const Diler = () => {
     const [outOtherTeam,setOutOtherTeam] = useState(false);
     // const [closeTransferHistory,setCloseTransferHistory] = useState(false);
     // const []
-    const URL = 'http://localhost:5001/api/';
+    const URL = 'http://45.84.225.47:5001/api/';
     // data футбалиста который уходит 
     // const [dataOutFootballer,setDataOutFootballer] = useState({});
     // // имя футболиста который присоединяется
@@ -39,7 +39,7 @@ export const Diler = () => {
     // const [ageJoinFootballer,setAgeJoinFootballer] = useState(0);
     const getDiler = async () => {
         try {
-            const resDiler = await axios.get('http://localhost:5001/api/transfer/diler/' + id);
+            const resDiler = await axios.get('http://45.84.225.47:5001/api/transfer/diler/' + id);
             
             const dataD = resDiler.data[0].team_num;
             // Обновляем состояние только если оно изменилось
@@ -52,7 +52,7 @@ export const Diler = () => {
     };
     const getTeams = async () => {
         try {
-            const res = await axios.get('http://localhost:5001/api/teams/');
+            const res = await axios.get('http://45.84.225.47:5001/api/teams/');
             
             // Обновляем состояние только если оно изменилось
             return res.data;
@@ -64,7 +64,7 @@ export const Diler = () => {
     };
     const getPlayers = async () => {
         try{
-            const res = await axios.get('http://localhost:5001/api/players/');
+            const res = await axios.get('http://45.84.225.47:5001/api/players/');
             return res.data
         } catch(e){
             console.log('ошибка при получении обьекта: ',e.message);
@@ -72,7 +72,7 @@ export const Diler = () => {
         }
     };
     const getJoinTransfer = async () => {
-        const res = await axios.get('http://localhost:5001/api/transfer/transfer-join/');
+        const res = await axios.get('http://45.84.225.47:5001/api/transfer/transfer-join/');
         try{
             const data = res.data;
             if(localStorage.getItem('team-name')){
@@ -89,7 +89,7 @@ export const Diler = () => {
         }
     };
     const getOutTransfer = async () => {
-        const res = await axios.get('http://localhost:5001/api/transfer/transfer-out/');
+        const res = await axios.get('http://45.84.225.47:5001/api/transfer/transfer-out/');
         try{
             const data = res.data;
             if(localStorage.getItem('team-name')){
@@ -108,7 +108,7 @@ export const Diler = () => {
     };
     // получаем всех футболистов 
     const getAllOutTransfer = async () => {
-        const res = await axios.get('http://localhost:5001/api/transfer/transfer-out/');
+        const res = await axios.get('http://45.84.225.47:5001/api/transfer/transfer-out/');
         try{
             const data = res.data;
             return data;
