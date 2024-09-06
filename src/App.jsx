@@ -9,13 +9,17 @@ import { Auth } from './Auth';
 import Cookies from 'js-cookie';
 import { NotFound } from './NotFound';
 import { Table } from './Table';
+import { Diler } from './Diler';
 function App() {
   const navigate = useNavigate();
   const authCookie = Cookies.get('auth');
+  const dilerCookie = Cookies.get('diler');
   useEffect(() => {
-    if (!authCookie) {
+    if (!authCookie && !dilerCookie) {
       navigate('/auth');
-    }else return;
+    }else if(dilerCookie){
+      navigate('/diler/'+dilerCookie);
+    } else return;
   }, [navigate]);
   
   return (
@@ -25,6 +29,7 @@ function App() {
        <Route path='/match/:id' element={<Match/>}/>
        <Route path='/auth' element={<Auth/>}/>
        <Route path='/table' element={<Table/>}/>
+       <Route path='/diler/:id' element={<Diler/>}/>
        <Route path='*' element={<NotFound/>}/>
     </Routes>
   )
