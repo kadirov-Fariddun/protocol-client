@@ -1254,8 +1254,8 @@ h1{
 
 //transfer-btn
 .transfer-btn{
-    height: 45px;
-    max-width: 150px;
+   height: 45px;
+    max-width: 160px;
     width: 100%;
     border-radius: 25px;
     background-color: #22c445;
@@ -1267,6 +1267,7 @@ h1{
     margin-bottom: 30px;
     transition: .3s;
     span{
+       font-size: 15px;
         position: relative;
         left: -10px;
     }
