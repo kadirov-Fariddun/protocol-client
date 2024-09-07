@@ -135,7 +135,6 @@ export const Diler = () => {
     };
 
     useEffect(()=>{
-        
         getDiler()
         .then(res=>{
             setDiler(res.dilerNum);
@@ -169,12 +168,17 @@ export const Diler = () => {
              setTransferJoin(res);
          })
          .catch(e=>console.log(e.message));
-    },[alertDelete]);
+    },[alertDelete,teams]);
 
     let team = {};
     if(teams.length !== 0){
         team = teams&&teams.find(team=>team.team_num === diler);   
-        localStorage.setItem('team-name',team.team);
+          // Проверка, что команда найдена
+        if (team && 'team' in team) {
+            localStorage.setItem('team-name', team.team);
+        } else {
+            console.warn('Команда не найдена!');
+        }
     }
     
    
