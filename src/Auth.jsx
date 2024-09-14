@@ -22,19 +22,19 @@ export const Auth = () => {
     }
   };
    // получаем User
-   const getTarnsferDillers = async () => {
-    const URL = `http://45.84.225.47:5001/api/transfer/dilers/`;
-    let data = [];
-    try{
-      const response = await axios.get(URL);
-      data = response.data;
-      return data;
-    }
-    catch (e) {
-      console.error('Ошибка получения данных:', e.message);
-      throw e;
-    }
-  };
+  //  const getTarnsferDillers = async () => {
+  //   const URL = `http://45.84.225.47:5001/api/transfer/dilers/`;
+  //   let data = [];
+  //   try{
+  //     const response = await axios.get(URL);
+  //     data = response.data;
+  //     return data;
+  //   }
+  //   catch (e) {
+  //     console.error('Ошибка получения данных:', e.message);
+  //     throw e;
+  //   }
+  // };
   const [user,setUser] = useState({});
   const [see,setSee] = useState(false);
   const [load,setLoad] = useState(false);
@@ -46,12 +46,12 @@ export const Auth = () => {
       console.log('Ощибка при получении пользователя: ',e.message);
       throw e;
     })
-    getTarnsferDillers()
-    .then(res => setDillers(res))
-    .catch(e=>{
-      console.log('Ощибка при получении пользователя: ',e.message);
-      throw e;
-    })
+    // getTarnsferDillers()
+    // .then(res => setDillers(res))
+    // .catch(e=>{
+    //   console.log('Ощибка при получении пользователя: ',e.message);
+    //   throw e;
+    // })
   },[]);
   const [errorPass,setErrorPass] = useState(false);
   const navigate =  useNavigate(); 
@@ -77,22 +77,23 @@ export const Auth = () => {
             const userPass = user.password;
            
             if(inputPass === userPass){
+              setLoad(true);
               Cookies.set('auth','admin',{ expires: 14});
               navigate('/');
             }
             else{
-              setLoad(true);
-              setTimeout(() => {
-                dillers.forEach(diler => {
-                  if(inputPass === diler.diler_code){
-                    Cookies.set('diler',diler.id,{ expires: 7});
-                    return navigate('/diler/'+diler.id);
-                  }else{
-                      setLoad(false);
-                      return setErrorPass(true);
-                  }
-                });
-              }, 1000);
+              return setErrorPass(true);
+              // setTimeout(() => {
+              //   dillers.forEach(diler => {
+              //     if(inputPass === diler.diler_code){
+              //       Cookies.set('diler',diler.id,{ expires: 7});
+              //       return navigate('/diler/'+diler.id);
+              //     }else{
+              //         setLoad(false);
+              //         return setErrorPass(true);
+              //     }
+              //   });
+              // }, 1000);
             }
             
           }}>Kirish</button>
