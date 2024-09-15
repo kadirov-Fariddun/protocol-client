@@ -35,7 +35,8 @@ export default function Home() {
       <ul>
         {
           Object.keys(turs).map(tur =>(
-            <li key={tur}><NavLink to={`/tur/${tur}`}>{tur} TUR</NavLink></li>
+            tur > 11 && tur < 13?
+            <li key={tur}><NavLink to={`/tur/${tur}`}>{tur} TUR</NavLink></li>:''
           ))
         }
         <GoTable />
