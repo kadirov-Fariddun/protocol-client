@@ -463,7 +463,7 @@ const sendMessageToTelegram = (playerAlert,team1,team2,player) => {
                         }
                         {
                           team1.red_card != null ? 
-                          JSON.parse(team1.yellow_card).map((y,i)=>(
+                          JSON.parse(team1.red_card).map((y,i)=>(
                             y.toLowerCase() == player.name.toLowerCase()?
                             <p key={i} className='red-card'>
                               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
@@ -577,6 +577,8 @@ const sendMessageToTelegram = (playerAlert,team1,team2,player) => {
               editTableObj(tableTeam1,tableTeam2,newData1,newData2);
               updateTable(tableTeam1.id,tableTeam1);
               updateTable(tableTeam2.id,tableTeam2);
+              console.log(tableTeam1.id,tableTeam2.id);
+              
             }}>Xa</button>
           </div>
         </div>
