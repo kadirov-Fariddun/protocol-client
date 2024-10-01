@@ -25,9 +25,9 @@ export const Table = () => {
         team.rm = (team.zm - team.pm);
       });
       teams.sort((a,b)=>{
-        if(a.isWinner){
+        if(a.point === b.point && Boolean(a.isWinner)){
           return -1;
-        } else if(b.isWinner){
+        } else if(a.point === b.point && Boolean(b.isWinner)){
           return 1;
         }else{
           if(a.point > b.point){
